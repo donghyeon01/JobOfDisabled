@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Job of disabled Application</string>
+    <string-array name="disable_type">
+        <item>시각 장애</item>
+        <item>지체 장애</item>
+        <item>지적 장애</item>
+        <item>뇌병변 장애</item>
+        <item>자폐성 장애</item>
+        <item>정신 장애</item>
+        <item>청각 장애</item>
+        <item>언어 장애</item>
+        <item>장루요루 장애</item>
+        <item>신장 장애</item>
+        <item>심장 장애</item>
+        <item>뇌전증 장애</item>
+        <item>국가유공</item>
+        <item>안면 장애</item>
+        <item>간 장애</item>
+        <item>호흡기 장애</item>
+    </string-array>
+    <string-array name="severe_yn">
+        <item>경증</item>
+        <item>중증</item>
+    </string-array>
+</resources>
