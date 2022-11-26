@@ -45,6 +45,7 @@ public class JoinActivity extends Activity {
         spinSevere=(Spinner) findViewById(R.id.spinSevere);
         btnRegister=(Button)findViewById(R.id.btnRegister);
 
+
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {

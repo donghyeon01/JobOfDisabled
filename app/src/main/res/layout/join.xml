@@ -117,6 +117,7 @@
             android:layout_height="wrap_content"
             android:background="#C8C8FF"
             android:hint="이름(본명)을 입력해주세요"
+            android:privateImeOptions="defalutInputmode=korean"
             />
     </LinearLayout>
 
@@ -144,7 +145,6 @@
             android:hint="출생년도를 지정해주세요"
             android:background="#C8C8FF"
             android:textColor="#000000"
-            android:enabled="false"
             android:textSize="17sp" />
     </LinearLayout>
 
@@ -225,6 +225,7 @@
             android:layout_weight="1"
             android:text="주소지"
             android:textColor="#000000"
+            android:privateImeOptions="defalutInputmode=korean"
             android:textSize="17sp" />
 
         <EditText
@@ -234,6 +235,7 @@
             android:layout_height="wrap_content"
             android:background="#C8C8FF"
             android:hint="거주지를 입력해주세요."
+            android:privateImeOptions="defalutInputmode=korean"
             />
 
     </LinearLayout>
