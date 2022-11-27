@@ -174,7 +174,8 @@
                 android:id="@+id/sexMan"
                 android:text="남성"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:checked="true"/>
             <RadioButton
                 android:id="@+id/sexGirl"
                 android:text="여성"
@@ -294,5 +295,10 @@
         android:layout_height="wrap_content"
         android:text="회원가입 하기"
         android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/textView_result"/>
 
 </LinearLayout>
