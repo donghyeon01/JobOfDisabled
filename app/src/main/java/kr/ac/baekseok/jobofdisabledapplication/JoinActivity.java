@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
@@ -16,9 +17,20 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -28,6 +40,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class JoinActivity extends Activity{
@@ -35,7 +49,7 @@ public class JoinActivity extends Activity{
     RadioGroup sexGroup;
     RadioButton sexButton;
     Spinner spinType,spinSevere;
-    Button btnRegister;
+    Button btnRegister,btnCheckId;
     Calendar c = Calendar.getInstance();
     int mYear=c.get(Calendar.YEAR);
     int mMonth=c.get(Calendar.MONTH);
@@ -45,7 +59,8 @@ public class JoinActivity extends Activity{
     private static String IP_ADDRESS="ftpdot.dothome.co.kr";
     private static String url="http://ftpdot.dothome.co.kr/insert.php";
     private static  String uid,upw,name,birth,phone,home,disable,severe,sex;
-
+    private boolean validate=false;
+    private AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +80,7 @@ public class JoinActivity extends Activity{
         spinSevere=(Spinner) findViewById(R.id.spinSevere);
         btnRegister=(Button)findViewById(R.id.btnRegister);
         mTextViewResult=(TextView)findViewById(R.id.textView_result);
+        btnCheckId=(Button)findViewById(R.id.btnCheckId);
 
         mTextViewResult.setMovementMethod(new ScrollingMovementMethod());
 
@@ -86,6 +102,49 @@ public class JoinActivity extends Activity{
             }
         });
 
+        btnCheckId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                uid = joinId.getText().toString();
+                if(TextUtils.isEmpty(uid)){
+                    Toast.makeText(JoinActivity.this, "ID가 빈칸입니다 입력해주세요", Toast.LENGTH_SHORT).show();
+                }else {
+                    if(validate){
+
+                    }
+                }
+                Response.Listener<String>responseListener=new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try{
+                            Toast.makeText(JoinActivity.this,response, Toast.LENGTH_SHORT).show();
+
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+                            if(success){
+                                AlertDialog.Builder builder=new AlertDialog.Builder(JoinActivity.this);
+                                dialog=builder.setMessage("you can use ID").setPositiveButton("OK",null).create();
+                                dialog.show();
+                                joinId.setEnabled(false);
+                                validate=true;
+
+                            }else{
+                                AlertDialog.Builder builder = new AlertDialog.Builder(JoinActivity.this);
+                                dialog=builder.setMessage("alreay used ID").setNegativeButton("OK",null).create();
+                                dialog.show();
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                ValidateRequest validateRequest=new ValidateRequest(uid,responseListener);
+                RequestQueue queue = Volley.newRequestQueue(JoinActivity.this);
+                queue.add(validateRequest);
+
+            }
+        });
+
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,27 +157,40 @@ public class JoinActivity extends Activity{
                 home = joinHome.getText().toString();
                 disable = spinType.getSelectedItem().toString();
                 severe = spinSevere.getSelectedItem().toString();
+                String checkpw = pw2.getText().toString();
 
+                if (TextUtils.isEmpty(uid)||TextUtils.isEmpty(upw)||TextUtils.isEmpty(name)||TextUtils.isEmpty(birth)||TextUtils.isEmpty(sex)||TextUtils.isEmpty(phone)||TextUtils.isEmpty(home)){
+                    Toast.makeText(JoinActivity.this, "빈칸이 있습니다! 빈칸을 채워주세요.", Toast.LENGTH_SHORT).show();
+                }else if(!validate){
+                    Toast.makeText(JoinActivity.this, "아이디 확인을 해주세요!", Toast.LENGTH_SHORT).show();
+                }else if(!checkpw.equals(upw)){
+                    Toast.makeText(JoinActivity.this, "비밀번호가 일치하지 않습니다!", Toast.LENGTH_SHORT).show();
+                }else if(phone.length()!=11){
+                    Toast.makeText(JoinActivity.this, "핸드폰의 길이가 11글자가 아닙니다!", Toast.LENGTH_SHORT).show();
+                }else {
 
-                ContentValues values = new ContentValues();
-                values.put("uid",uid);
-                values.put("upw",upw);
-                values.put("name",name);
-                values.put("birth",birth);
-                values.put("sex",sex);
-                values.put("phone",phone);
-                values.put("home",home);
-                values.put("disable",disable);
-                values.put("severe",severe);
+                    ContentValues values = new ContentValues();
+                    values.put("uid", uid);
+                    values.put("upw", upw);
+                    values.put("name", name);
+                    values.put("birth", birth);
+                    values.put("sex", sex);
+                    values.put("phone", phone);
+                    values.put("home", home);
+                    values.put("disable", disable);
+                    values.put("severe", severe);
 
-                InsertData task = new InsertData();
-                task.execute("http://" + IP_ADDRESS + "/Insert.php", uid, upw, name, birth, sex, phone, home, disable, severe);
-
-
+                    InsertData task = new InsertData();
+                    task.execute("http://" + IP_ADDRESS + "/Insert.php", uid, upw, name, birth, sex, phone, home, disable, severe);
+                }//else
             }
         });
 
     }//onCreate
+
+
+
+
     class InsertData extends AsyncTask<String, Void, String>{
         ProgressDialog progressDialog;
 
@@ -217,3 +289,4 @@ public class JoinActivity extends Activity{
 
 
 }
+
