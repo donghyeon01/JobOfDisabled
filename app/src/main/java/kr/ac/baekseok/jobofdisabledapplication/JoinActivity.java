@@ -21,14 +21,13 @@ import android.widget.Toast;
 
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
 
 import org.json.JSONObject;
 
@@ -57,9 +56,9 @@ public class JoinActivity extends Activity{
     private TextView mTextViewResult;
     private static String TAG="phpsignup";
     private static String IP_ADDRESS="ftpdot.dothome.co.kr";
-    private static String url="http://ftpdot.dothome.co.kr/insert.php";
     private static  String uid,upw,name,birth,phone,home,disable,severe,sex;
     private boolean validate=false;
+    private boolean success=false;
     private AlertDialog dialog;
 
     @Override
@@ -106,42 +105,43 @@ public class JoinActivity extends Activity{
             @Override
             public void onClick(View view) {
                 uid = joinId.getText().toString();
-                if(TextUtils.isEmpty(uid)){
+                Response.Listener<String> responseListener = null;
+                if (TextUtils.isEmpty(uid)) {
                     Toast.makeText(JoinActivity.this, "ID가 빈칸입니다 입력해주세요", Toast.LENGTH_SHORT).show();
-                }else {
-                    if(validate){
+                } else {
+                    responseListener = new Response.Listener<String>() {
 
-                    }
-                }
-                Response.Listener<String>responseListener=new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try{
-                            Toast.makeText(JoinActivity.this,response, Toast.LENGTH_SHORT).show();
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                //Toast.makeText(JoinActivity.this, response, Toast.LENGTH_LONG).show();
 
-                            JSONObject jsonResponse = new JSONObject(response);
-                            boolean success = jsonResponse.getBoolean("success");
-                            if(success){
-                                AlertDialog.Builder builder=new AlertDialog.Builder(JoinActivity.this);
-                                dialog=builder.setMessage("you can use ID").setPositiveButton("OK",null).create();
-                                dialog.show();
-                                joinId.setEnabled(false);
-                                validate=true;
+                                JSONObject jsonResponse = new JSONObject(response);
+                                boolean success = jsonResponse.getBoolean("success");
+                                if (success) {//사용할 수 있는 아이디라면
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(JoinActivity.this);
+                                    dialog = builder.setMessage("아이디 사용이 가능합니다.").setPositiveButton("OK", null).create();
+                                    dialog.show();
+                                    joinId.setEnabled(false);//아이디값을 바꿀 수 없도록 함
+                                    validate = true;//검증완료
+                                    //joinId.setBackgroundColor(getResources().getColor(R.color.colorGray));
+                                    //btnCheckId.setBackgroundColor(getResources().getColor(R.color.colorGray));
+                                } else {//사용할 수 없는 아이디라면
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(JoinActivity.this);
+                                    dialog = builder.setMessage("이미 사용 중인 아이디입니다.").setNegativeButton("OK", null).create();
+                                    dialog.show();
+                                }
 
-                            }else{
-                                AlertDialog.Builder builder = new AlertDialog.Builder(JoinActivity.this);
-                                dialog=builder.setMessage("alreay used ID").setNegativeButton("OK",null).create();
-                                dialog.show();
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                        }catch (Exception e){
-                            e.printStackTrace();
                         }
-                    }
-                };
-                ValidateRequest validateRequest=new ValidateRequest(uid,responseListener);
+                    };
+                }
+
+                ValidateRequest validateRequest = new ValidateRequest(uid, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(JoinActivity.this);
                 queue.add(validateRequest);
-
             }
         });
 
@@ -162,7 +162,7 @@ public class JoinActivity extends Activity{
                 if (TextUtils.isEmpty(uid)||TextUtils.isEmpty(upw)||TextUtils.isEmpty(name)||TextUtils.isEmpty(birth)||TextUtils.isEmpty(sex)||TextUtils.isEmpty(phone)||TextUtils.isEmpty(home)){
                     Toast.makeText(JoinActivity.this, "빈칸이 있습니다! 빈칸을 채워주세요.", Toast.LENGTH_SHORT).show();
                 }else if(!validate){
-                    Toast.makeText(JoinActivity.this, "아이디 확인을 해주세요!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(JoinActivity.this, "아이디 중복확인을 해주세요!", Toast.LENGTH_SHORT).show();
                 }else if(!checkpw.equals(upw)){
                     Toast.makeText(JoinActivity.this, "비밀번호가 일치하지 않습니다!", Toast.LENGTH_SHORT).show();
                 }else if(phone.length()!=11){
@@ -190,6 +190,22 @@ public class JoinActivity extends Activity{
 
 
 
+    public class ValidateRequest extends StringRequest {
+
+        final static private String URL = "http://ftpdot.dothome.co.kr/checkID.php";
+        private Map<String, String> parameters;
+
+        public ValidateRequest(String userID, Response.Listener<String> listener){
+            super(Method.POST, URL, listener, null);//해당 URL에 POST방식으로 파마미터들을 전송함
+            parameters = new HashMap<>();
+            parameters.put("userID", userID);
+        }
+
+        @Override
+        protected Map<String, String> getParams() throws AuthFailureError {
+            return parameters;
+        }
+    }
 
     class InsertData extends AsyncTask<String, Void, String>{
         ProgressDialog progressDialog;
@@ -209,6 +225,7 @@ public class JoinActivity extends Activity{
 
             progressDialog.dismiss();
             mTextViewResult.setText(result);
+
             Log.d(TAG, "POST response  - " + result);
         }
 
