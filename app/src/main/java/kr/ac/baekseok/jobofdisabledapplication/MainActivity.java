@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private String mJsonString;
     private static String uid,upw;
     private static final String TAG_JSON = "user";
-    ArrayList<HashMap<String,String>> mArrayList;
+    ArrayList<HashMap<String,String>> mArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +65,9 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mArrayList.clear();
+                if(!mArrayList.isEmpty()){
+                    mArrayList.clear();
+                }
 
                 GetData task = new GetData();
                 task.execute(edtId.getText().toString(),edtPw.getText().toString());
@@ -88,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(result);
 
             progressDialog.dismiss();
-            Toast.makeText(MainActivity.this, result, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MainActivity.this, result, Toast.LENGTH_SHORT).show();
             Log.d(TAG,"response - "+result);
 
             if(result==null){
@@ -104,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
             String uid=(String) params[0];
             String upw=(String) params[1];
 
-            String serverURL="http://ftpdothome.co.kr/login.php";
+            String serverURL="http://ftpdot.dothome.co.kr/Login.php";
             String postParameters = "uid="+uid+"&upw="+upw;
 
             try {
@@ -152,33 +154,35 @@ public class MainActivity extends AppCompatActivity {
     private void showResult(){
         try {
             JSONObject jsonObject = new JSONObject(mJsonString);
-            JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
 
-            for (int i =0; i<jsonArray.length();i++){
-                JSONObject item = jsonArray.getJSONObject(i);
-
-                String uid= item.getString("uid");
-                String name = item.getString("name");
-                String sex = item.getString("sex");
-                String disableName = item.getString("disableName");
+                boolean success = jsonObject.getBoolean("success");
+                if(success==false){
+                    Toast.makeText(this, "아이디 또는 비밀번호를 확인해주세요", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                String uid= jsonObject.getString("uid");
+                String name = jsonObject.getString("name");
+                String sex = jsonObject.getString("sex");
+                String severe = jsonObject.getString("severe");
+                String disableName = jsonObject.getString("disableName");
 
                 HashMap<String, String> hashMap = new HashMap<>();
 
                 hashMap.put("uid",uid);
                 hashMap.put("name",name);
                 hashMap.put("sex",sex);
+                hashMap.put("severe",severe);
                 hashMap.put("disableName",disableName);
 
                 mArrayList.add(hashMap);
 
-                Intent intent = new Intent(MainActivity.this, MenuActivity.class);
+                Intent intent = new Intent(MainActivity.this, job.class);
                 intent.putExtra("loginID",edtId.getText().toString());
                 intent.putExtra("name",name);
                 intent.putExtra("disableName",disableName);
                 startActivity(intent);
                 Toast.makeText(this, "로그인하였습니다", Toast.LENGTH_SHORT).show();
                 return;
-            }
 
         }catch (JSONException e){
             Log.d(TAG,"showResult : " + e);
