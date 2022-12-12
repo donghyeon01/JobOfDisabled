@@ -28,6 +28,9 @@
         <activity android:name=".JoinActivity"/>
         <activity android:name=".information"/>
         <activity android:name=".job"/>
+        <activity android:name=".infor_contest"/>
+        <activity android:name=".infor_promote"/>
+        <activity android:name=".infor_policy"/>
     </application>
 
 </manifest>

@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="#99CCFF">
-
         <ImageButton
+            android:id="@+id/btnJob"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_margin="15dp"
             android:scaleType="centerCrop"
             android:src="@drawable/job" />
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -23,256 +22,363 @@
             android:layout_marginBottom="15dp"
             android:text="정보 게시판"
             android:textSize="40sp" />
-
     </LinearLayout>
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="공모전 게시판"
-        android:textSize="25dp"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="30dp"
-        android:background="#e6f2ff"/>
+        android:background="#e6f2ff"
+        android:text="  공모전  게시판  "
+        android:textSize="25dp" />
 
-    <LinearLayout
+    <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp">
-
+        android:layout_height="match_parent"
+        android:layout_weight="1">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/job"
-                android:layout_margin="10dp"
-                android:layout_weight="1"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="7"
-                android:text="2022공모전"
-                android:textSize="15dp"
-                android:gravity="center"/>
-        </LinearLayout>
+            android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/btnCon1"
+                android:layout_width="170dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/job"
-                android:layout_margin="10dp"
-                android:layout_weight="1"/>
-            <TextView
-                android:layout_width="match_parent"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/contest1" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    android:gravity="center"
+                    android:text="2022 공모전"
+                    android:textSize="15dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/btnCon2"
+                android:layout_width="170dp"
                 android:layout_height="match_parent"
-                android:layout_weight="7"
-                android:text="2022공모전"
-                android:textSize="15dp"
-                android:gravity="center"/>
-        </LinearLayout>
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/contest2" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    android:gravity="center"
+                    android:text="2021 공모전"
+                    android:textSize="15dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/btnCon3"
+                android:layout_width="170dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/contest3" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    android:gravity="center"
+                    android:text="2020 공모전"
+                    android:textSize="15dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/btnCon4"
+                android:layout_width="170dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/contest4" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    android:gravity="center"
+                    android:text="2019 공모전"
+                    android:textSize="15dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/btnCon5"
+                android:layout_width="170dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/contest5" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    android:gravity="center"
+                    android:text="2018 공모전"
+                    android:textSize="15dp" />
+            </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/job"
-                android:layout_margin="10dp"
-                android:layout_weight="1"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="7"
-                android:text="2022공모전"
-                android:textSize="15dp"
-                android:gravity="center"/>
         </LinearLayout>
-
-    </LinearLayout>
+    </HorizontalScrollView>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="정책 게시판"
-        android:textSize="25dp"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="40dp"
-        android:background="#e6f2ff"/>
+        android:background="#e6f2ff"
+        android:text="    정책  게시판    "
+        android:textSize="25dp" />
 
-    <LinearLayout
+    <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp">
-
+        android:layout_height="match_parent"
+        android:layout_weight="1">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/job"
-                android:layout_margin="10dp"
-                android:layout_weight="1"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="7"
-                android:text="2022공모전"
-                android:textSize="15dp"
-                android:gravity="center"/>
-        </LinearLayout>
+            android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/btnPol1"
+                android:layout_width="170dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/job"
-                android:layout_margin="10dp"
-                android:layout_weight="1"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="7"
-                android:text="2022공모전"
-                android:textSize="15dp"
-                android:gravity="center"/>
-        </LinearLayout>
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/policy_icon1" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    android:gravity="center"
+                    android:text="정책의 이해"
+                    android:textSize="15dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/btnPol2"
+                android:layout_width="170dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/job"
-                android:layout_margin="10dp"
-                android:layout_weight="1"/>
-            <TextView
-                android:layout_width="match_parent"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/policy_icon2" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    android:gravity="center"
+                    android:text="의료지원"
+                    android:textSize="15dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/btnPol3"
+                android:layout_width="170dp"
                 android:layout_height="match_parent"
-                android:layout_weight="7"
-                android:text="2022공모전"
-                android:textSize="15dp"
-                android:gravity="center"/>
-        </LinearLayout>
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/policy_icon3" />
 
-    </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    android:gravity="center"
+                    android:text="공공요금 감면"
+                    android:textSize="15dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/btnPol4"
+                android:layout_width="170dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/policy_icon4" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    android:gravity="center"
+                    android:text="지역사회복지사업"
+                    android:textSize="15dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/btnPol5"
+                android:layout_width="170dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/policy_icon5" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    android:gravity="center"
+                    android:text="장애인등록/장애정도 심사"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </HorizontalScrollView>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="홍보 게시판"
-        android:textSize="25dp"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="40dp"
-        android:background="#e6f2ff"/>
+        android:background="#e6f2ff"
+        android:text="    홍보  게시판    "
+        android:textSize="25dp" />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/btnPro1"
+                android:layout_width="170dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/promote_icon" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    android:gravity="center"
+                    android:text="발달장애인 공공후견 지원"
+                    android:textSize="15dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/btnPro2"
+                android:layout_width="170dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/promote_icon" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    android:gravity="center"
+                    android:text="언어발달지원 개요"
+                    android:textSize="15dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/btnPro3"
+                android:layout_width="170dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/promote_icon" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    android:gravity="center"
+                    android:text="발달장애인 부모상담지원"
+                    android:textSize="15dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/btnPro4"
+                android:layout_width="170dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/promote_icon" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    android:gravity="center"
+                    android:text="장애인활동지원사업"
+                    android:textSize="15dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/btnPro5"
+                android:layout_width="170dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/promote_icon" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    android:gravity="center"
+                    android:text="서비스이용"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="20dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/job"
-                android:layout_margin="10dp"
-                android:layout_weight="1"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="7"
-                android:text="2022공모전"
-                android:textSize="15dp"
-                android:gravity="center"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/job"
-                android:layout_margin="10dp"
-                android:layout_weight="1"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="7"
-                android:text="2022공모전"
-                android:textSize="15dp"
-                android:gravity="center"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/job"
-                android:layout_margin="10dp"
-                android:layout_weight="1"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="7"
-                android:text="2022공모전"
-                android:textSize="15dp"
-                android:gravity="center"/>
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#e6f2ff">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="필요할까봐 비워놨습니다. 넣을게 없을 경우 공백으로 채우면 되겠습니다."/>
-
+        android:layout_height="50dp">
     </LinearLayout>
 
 </LinearLayout>

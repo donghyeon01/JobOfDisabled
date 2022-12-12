@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.LauncherActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -51,6 +53,15 @@ public class job extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.job);
 
+        ImageButton btnInform = (ImageButton) findViewById(R.id.btnInform);
+
+        btnInform.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(job.this,information.class);
+                startActivity(intent);
+            }//onClick()
+        }); //btnJob
 
         try {
             readCSV();

@@ -1,9 +1,12 @@
 package kr.ac.baekseok.jobofdisabledapplication;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -29,6 +32,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -38,6 +42,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -58,7 +63,8 @@ public class JoinActivity extends Activity{
     private static String IP_ADDRESS="ftpdot.dothome.co.kr";
     private static  String uid,upw,name,birth,phone,home,disable,severe,sex;
     private boolean validate=false;
-    private boolean success=false;
+    private String mJsonString;
+    ArrayList<HashMap<String,String>> mArrayList = new ArrayList<>();
     private AlertDialog dialog;
 
     @Override
@@ -109,39 +115,9 @@ public class JoinActivity extends Activity{
                 if (TextUtils.isEmpty(uid)) {
                     Toast.makeText(JoinActivity.this, "ID가 빈칸입니다 입력해주세요", Toast.LENGTH_SHORT).show();
                 } else {
-                    responseListener = new Response.Listener<String>() {
-
-                        @Override
-                        public void onResponse(String response) {
-                            try {
-                                //Toast.makeText(JoinActivity.this, response, Toast.LENGTH_LONG).show();
-
-                                JSONObject jsonResponse = new JSONObject(response);
-                                boolean success = jsonResponse.getBoolean("success");
-                                if (success) {//사용할 수 있는 아이디라면
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(JoinActivity.this);
-                                    dialog = builder.setMessage("아이디 사용이 가능합니다.").setPositiveButton("OK", null).create();
-                                    dialog.show();
-                                    joinId.setEnabled(false);//아이디값을 바꿀 수 없도록 함
-                                    validate = true;//검증완료
-                                    //joinId.setBackgroundColor(getResources().getColor(R.color.colorGray));
-                                    //btnCheckId.setBackgroundColor(getResources().getColor(R.color.colorGray));
-                                } else {//사용할 수 없는 아이디라면
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(JoinActivity.this);
-                                    dialog = builder.setMessage("이미 사용 중인 아이디입니다.").setNegativeButton("OK", null).create();
-                                    dialog.show();
-                                }
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    };
+                    GetData vali = new GetData();
+                    vali.execute(uid);
                 }
-
-                ValidateRequest validateRequest = new ValidateRequest(uid, responseListener);
-                RequestQueue queue = Volley.newRequestQueue(JoinActivity.this);
-                queue.add(validateRequest);
             }
         });
 
@@ -188,24 +164,109 @@ public class JoinActivity extends Activity{
 
     }//onCreate
 
+    private class GetData extends AsyncTask<String, Void, String>{
+        ProgressDialog progressDialog;
+        String errorString = null;
 
-
-    public class ValidateRequest extends StringRequest {
-
-        final static private String URL = "http://ftpdot.dothome.co.kr/checkID.php";
-        private Map<String, String> parameters;
-
-        public ValidateRequest(String userID, Response.Listener<String> listener){
-            super(Method.POST, URL, listener, null);//해당 URL에 POST방식으로 파마미터들을 전송함
-            parameters = new HashMap<>();
-            parameters.put("userID", userID);
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = ProgressDialog.show(JoinActivity.this,"잠시만 기다려주세요.",null,true,true);
         }
 
         @Override
-        protected Map<String, String> getParams() throws AuthFailureError {
-            return parameters;
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            progressDialog.dismiss();
+            //Toast.makeText(MainActivity.this, result, Toast.LENGTH_SHORT).show();
+            Log.d(TAG,"response - "+result);
+
+            if(result==null){
+                Toast.makeText(JoinActivity.this, errorString, Toast.LENGTH_SHORT).show();
+            }else{
+                mJsonString = result;
+                showResult();
+            }
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String uid=(String) params[0];
+
+            String serverURL="http://ftpdot.dothome.co.kr/checkID.php";
+            String postParameters = "uid="+uid;
+
+            try {
+                URL url=new URL(serverURL);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+
+                httpURLConnection.setReadTimeout(5000);
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.connect();
+
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                outputStream.write(postParameters.getBytes("UTF-8"));
+                outputStream.flush();
+                outputStream.close();
+
+                int responseStatusCode = httpURLConnection.getResponseCode();
+                Log.d(TAG,"POST response code - "+responseStatusCode);
+
+                InputStream inputStream;
+                if(responseStatusCode==HttpURLConnection.HTTP_OK){
+                    inputStream=httpURLConnection.getInputStream();
+                }else{
+                    inputStream=httpURLConnection.getErrorStream();
+                }
+
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                StringBuilder sb = new StringBuilder();
+                String line;
+
+                while((line = bufferedReader.readLine())!=null){
+                    sb.append(line);
+                }
+
+                bufferedReader.close();
+                return sb.toString();
+            }catch (Exception e){
+                Log.d(TAG,"InsertData : Error ",e);
+                return new String("Error: "+e.getMessage());
+            }
         }
     }
+    private void showResult(){
+        try {
+            JSONObject jsonObject = new JSONObject(mJsonString);
+
+            boolean success = jsonObject.getBoolean("success");
+            if(success==false){
+                AlertDialog.Builder builder = new AlertDialog.Builder(JoinActivity.this);
+                dialog = builder.setMessage("이미 사용 중인 아이디입니다.").setNegativeButton("OK", null).create();
+                dialog.show();
+                validate = false;//검증실패
+                return;
+            }else if(success==true){
+                AlertDialog.Builder builder = new AlertDialog.Builder(JoinActivity.this);
+                dialog = builder.setMessage("아이디 사용이 가능합니다.").setPositiveButton("OK", null).create();
+                dialog.show();
+                joinId.setEnabled(false);//아이디값을 바꿀 수 없도록 함
+                validate = true;//검증완료
+                return;
+            }
+
+
+            return;
+
+        }catch (JSONException e){
+            Log.d(TAG,"showResult : " + e);
+        }
+    }
+
 
     class InsertData extends AsyncTask<String, Void, String>{
         ProgressDialog progressDialog;

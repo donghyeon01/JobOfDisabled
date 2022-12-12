@@ -10,6 +10,7 @@
         android:background="#99CCFF">
 
         <ImageButton
+            android:id="@+id/btnInform"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_margin="15dp"
